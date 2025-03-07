@@ -5,7 +5,6 @@ check_packages(
     auto_install=True, verbose=False,
 )
 from ultralytics import YOLO
-
 from hexss.path import get_script_directory
 
 json_update(rf"C:\Users\{username}\AppData\Roaming\Ultralytics\settings.json", {
@@ -16,18 +15,15 @@ json_update(rf"C:\Users\{username}\AppData\Roaming\Ultralytics\settings.json", {
 
 'https://github.com/ultralytics/ultralytics?tab=readme-ov-file#models'
 
-model = YOLO('yolov8m.yaml')  # เป็นการสร้างโมเดลใหม่ขึ้นมา
+if __name__ == '__main__':
+    model = YOLO('yolo11m.pt')  # Create a new model
+    # model = YOLO(r'runs\detect\train\weights\last.pt')  # Continue training
 
-# โหลด pretrained model มาเพื่อให้เราไม่ต้องเทรนใหม่ทั้งหมดตั้งแต่เริ่ม
-# model = YOLO(r'runs\detect\train\weights\last.pt')
+    results = model.train(data='data.yaml', epochs=5)
 
-results = model.train(data='data.yaml', epochs=1)
+    results = model.val()  # Test the model
 
-# ทดสอบโมเดลโดยใช้ validation datasets ที่เตรียมไว้
-results = model.val()
+    success = model.export(format='onnx')  # Save the model in ONNX format.
 
-# เซฟโมเดลโดยให้โมเดลอยู่ใน ONNX format
-success = model.export(format='onnx')
-
-print(results)
-print(success)
+    print(results)
+    print(success)
