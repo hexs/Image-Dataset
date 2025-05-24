@@ -1,0 +1,10 @@
+{
+    "class_names": [
+        "conn",
+        "not_conn"
+    ],
+    "img_size": [
+        180,
+        180
+    ]
+}
